@@ -1,0 +1,54 @@
+from custom_stack import StackNode
+
+class QueueEmptyException(Exception):
+    pass
+
+class LinearQueue:
+    def __init__(self):
+        self._storage = []
+
+    def __len__(self):
+        return len(self._storage)
+
+    def is_empty(self):
+        return len(self._storage) == 0
+
+    def enqueue(self, item):
+        self._storage.append(item)
+
+    def dequeue(self):
+        if self.is_empty():
+            raise QueueEmptyException("Queue is empty; transaction rejected.")
+        return self._storage.pop(0)
+
+
+class NodeBasedQueue:
+    def __init__(self):
+        self._front = None
+        self._back = None
+        self._elements = 0
+
+    def __len__(self):
+        return self._elements
+
+    def is_empty(self):
+        return self._elements == 0
+
+    def enqueue(self, item):
+        fresh_node = StackNode(item, None)
+        if self.is_empty():
+            self._front = fresh_node
+        else:
+            self._back.next = fresh_node
+        self._back = fresh_node
+        self._elements += 1
+
+    def dequeue(self):
+        if self.is_empty():
+            raise QueueEmptyException("Underlying node chain holds no items.")
+        extracted = self._front.payload
+        self._front = self._front.next
+        self._elements -= 1
+        if self.is_empty():
+            self._back = None
+        return extracted
