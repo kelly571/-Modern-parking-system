@@ -1,0 +1,2 @@
+# Standard library components are utilized for base structure operations.
+# Database interactions are driven directly via internal sqlite3 engines.
