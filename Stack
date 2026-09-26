@@ -1,0 +1,58 @@
+class StackEmptyException(Exception):
+    pass
+
+class BoundedArrayStack:
+    def __init__(self, limit=100):
+        self._items = []
+        self._limit = limit
+
+    def __len__(self):
+        return len(self._items)
+
+    def is_empty(self):
+        return len(self._items) == 0
+
+    def push(self, entry):
+        if len(self._items) >= self._limit:
+            raise OverflowError("Stack configuration storage is full.")
+        self._items.append(entry)
+
+    def pop(self):
+        if self.is_empty():
+            raise StackEmptyException("Cannot pop from an empty collection.")
+        return self._items.pop()
+
+    def inspect_top(self):
+        if self.is_empty():
+            raise StackEmptyException("Stack has no structural elements to peek.")
+        return self._items[-1]
+
+
+class StackNode:
+    def __init__(self, payload, next_link=None):
+        self.payload = payload
+        self.next = next_link
+
+
+class NodeBasedStack:
+    def __init__(self):
+        self._top_node = None
+        self._count = 0
+
+    def __len__(self):
+        return self._count
+
+    def is_empty(self):
+        return self._count == 0
+
+    def push(self, entry):
+        self._top_node = StackNode(entry, self._top_node)
+        self._count += 1
+
+    def pop(self):
+        if self.is_empty():
+            raise StackEmptyException("The dynamic stack chain has no items left.")
+        target_val = self._top_node.payload
+        self._top_node = self._top_node.next
+        self._count -= 1
+        return target_val
